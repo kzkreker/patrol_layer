@@ -5,7 +5,8 @@
 #include <QtSql>
 #include <QDebug>
 #include <QDate>
-
+#include "database.h"
+#include "gpsdata.h"
 class DataBase : public QObject
 {
     Q_OBJECT
@@ -23,8 +24,11 @@ public slots:
     //void addSettings();
     bool activateConnection();
     void newTable(QString id);
+    void createTables();
 
-    
+
+private:
+
 };
 
 #endif // DATABASE_H
