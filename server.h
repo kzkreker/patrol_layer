@@ -15,9 +15,9 @@ class Server : public QObject {
     signals:
 
     private slots:
-        void nix();
-        bool curentGPSResiv(QString lat, QString lon, QString time,
-                           QString dateCV, QString course, QString id);
+
+         bool curentGPSPICResiv (QString GPSstring, QString PICstring, QString idmain,QString dataCV);
+         bool sendNotGPSPICResiv (QString GPSstring, QString PICstring, QString idmain);
 
     private:
         MaiaXmlRpcServer *server;

@@ -1,33 +1,38 @@
 #include "server.h"
 
-
+////////////////////////////////////////////////////////
+///конструктор сервера
+////////////////////////////////////////////////////////
 Server::Server(QObject* parent) : QObject(parent) {
 
     server = new MaiaXmlRpcServer(8082, this);
-    server->addMethod("examples.nix", this, "nix");
-    server->addMethod("transport.curentGPSResiv", this, "curentGPSResiv");
+
+    server->addMethod("transport.curentGPSPICResiv", this, "curentGPSPICResiv");
+    server->addMethod("transport.sendNotGPSPICResiv", this, "sendNotGPSPICResiv");
     connector.activateConnection();
     connector.createTables();
 }
 
-///////////////////////////////////////////////////////
-//
-///////////////////////////////////////////////////////
-void Server::nix() {
-    qDebug() << "i got called";
+////////////////////////////////////////////////////////
+///прием кординат и показаний датчиков от клиентов
+////////////////////////////////////////////////////////
+bool Server:: curentGPSPICResiv(QString GPSstring, QString PICstring, QString idmain,QString dataCV)
+{
+    if (GPSstring!="fail" ){
+    connector.addGPScordinaes(GPSstring,dataCV,idmain);}
+    if (PICstring!="fail" ){
+    connector.addPICstatus(PICstring,dataCV,idmain);}
+
+    return true ;
 }
 
-////////////////////////////////////////////////////////
-///
-////////////////////////////////////////////////////////
-bool Server::curentGPSResiv(QString lat, QString lon,QString dateCV, QString speed, QString course, QString id)
+///////////////////////////////////////////////////////
+//обработка не отправленных показаний
+///////////////////////////////////////////////////////
+bool Server:: sendNotGPSPICResiv(QString GPSstring, QString PICstring, QString idmain)
 {
-    qDebug()<<dateCV;
-    qDebug()<<id;
-    qDebug()<<lat;
-    qDebug()<<lon;
-    qDebug()<<speed;
-    qDebug()<<course;
-    connector.addGPScordinaes(lat,lon, dateCV, speed,course , id);
+    connector.addGPSNotSend(GPSstring, idmain);
+    connector.addPICNotSend(PICstring, idmain);
+
     return true;
 }

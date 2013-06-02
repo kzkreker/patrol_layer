@@ -16,14 +16,22 @@ public:
 signals:
 
 public slots:
-    void addGPScordinaes(QString lat,QString lon, QString dateCV,
-                         QString speed, QString course,  QString id);
+    //обработка приема текущих кординрат
+    void addGPScordinaes(QString GPS,QString dataCV, QString idmain);
+    void addPICstatus(QString PIC,QString dataCV, QString idmain);
+
+    //обработка приема не обправленных данных
+    void addPICNotSend(QString PICstring, QString  idmain);
+    void addGPSNotSend(QString GPSstring, QString  idmain);
 
     void closeConnection();
     //void readSettings();
     //void addSettings();
+
+    //обслуживающие функции
     bool activateConnection();
-    void newTable(QString id);
+    void newTableGPS(QString id);
+    void newTablePIC(QString id);
     void createTables();
 
 
